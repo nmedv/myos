@@ -1,0 +1,28 @@
+	cli
+	
+	call	enable_a20wait0
+	mov		al,	0xAD
+	out		0x64, al		; Disable keyboard
+	mov		al, 0xD0
+	out		0x64, al		; Read from input
+
+	call	enable_a20wait1
+	in		al, 0x60
+	push	eax
+
+	call	enable_a20wait0
+	mov		al,0xD1
+	out		0x64,al
+
+	call	enable_a20wait0
+	pop		eax
+	or		al,2
+	out		0x60,al
+
+	call	enable_a20wait0
+	mov		al,0xAE
+	out		0x64,al
+
+	call	enable_a20wait0
+	sti	
+	ret	

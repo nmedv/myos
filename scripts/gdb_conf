@@ -1,0 +1,11 @@
+# Basic setup
+set confirm off
+set verbose off
+
+# Intel syntax
+set disassembly-flavor intel
+
+define code
+	x/16i ($cs << 4) + $eip
+end
+

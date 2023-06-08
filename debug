@@ -1,0 +1,3 @@
+#!/bin/bash
+
+i686-elf-gdb -ix "scripts/gdb_conf" -ix "scripts/myos_dbg"

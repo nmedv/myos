@@ -13,8 +13,9 @@ krldr:
 	mov		ah, 0x42
 	int		0x13
 	jc		drv_load_error	; Error (if CF is 1)
-
-	jmp		dword 0x10000	; Jump to 32-bit kernel
+	
+	jmp		dword 0x00:0x10054	; Jump to 32-bit kernel
+								; 0x54 - ELF32 header size
 
 drv_load_error:
 	mov		si, disk_err_str
@@ -126,4 +127,4 @@ kr_dap			dw	0x1000
 				dw	0x0040	; Number of sectors to be read
 				dw	0x0000	; Segment offset
 				dw	0x1000	; Segment
-				dq	0x02	; Absolute number of the start of the sectors to be read
+				dq	0x41	; Absolute number of the start of the sectors to be read

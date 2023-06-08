@@ -1,28 +1,29 @@
-	cli
+ENTRY(krmain)
+OUTPUT(elf32-i386)
+
+SECTIONS
+{
+	. = 0x10000;
 	
-	call	enable_a20wait0
-	mov		al,	0xAD
-	out		0x64, al		; Disable keyboard
-	mov		al, 0xD0
-	out		0x64, al		; Read from input
-
-	call	enable_a20wait1
-	in		al, 0x60
-	push	eax
-
-	call	enable_a20wait0
-	mov		al,0xD1
-	out		0x64,al
-
-	call	enable_a20wait0
-	pop		eax
-	or		al,2
-	out		0x60,al
-
-	call	enable_a20wait0
-	mov		al,0xAE
-	out		0x64,al
-
-	call	enable_a20wait0
-	sti	
-	ret	
+	.text BLOCK(0x1000) : ALIGN(0x1000)
+	{
+		*(.text)
+	}
+	
+	.rdata BLOCK(0x1000) : ALIGN(0x1000)
+	{
+		*(.rdata)
+	}
+	
+	.data BLOCK(0x1000) : ALIGN(0x1000)
+	{
+		*(.data)
+	}
+	
+	.bss BLOCK(0x1000) : ALIGN(0x1000)
+	{
+		*(.bss)
+	}
+	
+	end = .;
+}

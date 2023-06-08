@@ -22,8 +22,8 @@ org 0x7c00
 
 start:
 	cli
-	mov		ax, 0x07e0
-	mov		ss, ax			; Stack > 0x7e00
+	mov		ax, 0x07ef
+	mov		ss, ax			; Stack > 0x7ef0
 	mov		sp, 0
 	mov		bp, 0
 	
