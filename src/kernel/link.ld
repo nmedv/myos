@@ -1,16 +1,15 @@
-ENTRY(krmain)
-OUTPUT(elf32-i386)
+ENTRY(kmain)
 
 SECTIONS
 {
-	. = 0x10000;
+	. = 0x10000 + SIZEOF_HEADERS;
 	
-	.text BLOCK(0x1000) : ALIGN(0x1000)
+	.text :
 	{
 		*(.text)
 	}
 	
-	.rdata BLOCK(0x1000) : ALIGN(0x1000)
+	/* .rdata BLOCK(0x1000) : ALIGN(0x1000)
 	{
 		*(.rdata)
 	}
@@ -25,5 +24,5 @@ SECTIONS
 		*(.bss)
 	}
 	
-	end = .;
+	end = .; */
 }

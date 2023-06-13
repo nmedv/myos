@@ -1,0 +1,28 @@
+%ifndef MACRO_MAC
+%define MACRO_MAC
+
+; =============================================================================
+; Segment Descriptor flags/bits
+
+; Flags
+%define SD_G	10000000b	; Granularity. If set, the limit is in units of
+							; 4096-byte pages, for a maximum of 2^32 bytes.
+%define SD_B	01000000b	; Big: if set, the maximum offset size for a data
+							; segment is increased to 32-bit 0xffffffff.
+
+; Access byte
+%define SD_P	10000000b	; Present
+%define SD_DPL0	00000000b	; Privilege level 0 (max, kernel) - default
+%define SD_DPL1	00100000b	; Privilege level 1
+%define SD_DPL2	01000000b	; Privilege level 2
+%define SD_DPL3	01100000b	; Privilege level 3 (min)
+%define SD_S	00010000b	; If set, this is a code/data segment. If clear,
+							; this is a system segment.
+%define SD_E	00001000b	; If set, this is a code seg descriptor. If clear,
+							; this is a data/stack seg descriptor.
+%define SD_DC	00000100b	; Direction/Conforming (data/code)
+%define SD_RW	00000010b	; Readable/Writable (code/data)
+%define SD_A	00000001b	; Accessed
+
+
+%endif

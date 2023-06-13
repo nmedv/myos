@@ -25,4 +25,44 @@
 
 	call	enable_a20wait0
 	sti	
-	ret	
+	ret
+
+
+
+; Set flat 32-bit memory model (base=0, limit=0xffffffff)
+setupGdt:
+
+	; Null descriptor setup
+	lgdt	[null_descriptor]
+	
+	; Kernel mode code sergment setup
+	mov		word [kr_code_seg], 0xffff
+	mov		byte [kr_code_seg+6], 0x0f
+	xor		al, al
+	or		al, SD_P
+	or		al, SD_S
+	or		al, SD_E
+	or		al, SD_RW
+	mov		[kr_code_seg+5], al
+	xor		al, al
+	or		al, SD_G
+	or		al, SD_B
+	or		[kr_code_seg+6], al
+	lgdt	[kr_code_seg]
+	
+	; Kernel mode data sergment setup
+	mov		word [kr_data_seg], 0xffff
+	mov		byte [kr_data_seg+6], 0x0f
+	xor		al, al
+	or		al, SD_P
+	or		al, SD_S
+	or		al, SD_RW
+	mov		[kr_data_seg+5], al
+	xor		al, al
+	or		al, SD_G
+	or		al, SD_B
+	or		[kr_data_seg+6], al
+	lgdt	[kr_data_seg]
+	
+	xor		al, al
+	ret

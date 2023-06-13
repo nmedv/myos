@@ -9,7 +9,7 @@
 
 set confirm off
 set verbose off
-set prompt real-mode-gdb 
+set prompt \033[31m(real-mode-gdb) \033[0m
 
 set output-radix 0d10
 set input-radix 0d10

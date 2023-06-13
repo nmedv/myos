@@ -11,6 +11,9 @@ OC = i686-elf-objcopy
 
 LD = i686-elf-ld
 
+# All source files
+SRCS = $(shell find src -name *.asm -o -name *.c)
+
 
 #=============================================================================
 # Set default functions
@@ -21,6 +24,7 @@ all: dirs boot krldr kernel iso
 
 dirs:
 	mkdir -p build
+	mkdir -p build/krldr
 	mkdir -p build/kernel
 
 clean:
@@ -28,44 +32,53 @@ clean:
 
 
 #=============================================================================
-# Build bootsector and kernel loader
+# Build bootsector
 
 boot:
-	$(ASM) -f bin -o build/boot src/boot.asm
+	$(ASM) -f bin -o build/boot.bin src/boot.asm
+	
+	
+#=============================================================================
+# Build kernel loader
 
-krldr:
-	$(ASM) -f bin -o build/krldr -I src/krldr src/krldr/krldr.asm
+KRLDR_SRCS_C = $(filter src/krldr/%.c, $(SRCS))
+KRLDR_SRCS_ASM = $(filter src/krldr/%.asm, $(SRCS))
+KRLDR_OBJS = \
+	$(KRLDR_SRCS_C:src/krldr/%.c=build/krldr/%.o) \
+	$(KRLDR_SRCS_ASM:src/krldr/%.asm=build/krldr/%.o)
+KRLDR_HDRS = src/krldr/include
+	
+build/krldr/%.o: src/krldr/%.c
+	$(CC) -g $(CCFLAGS) -I $(KRLDR_HDRS) -o $@ $<
+
+build/krldr/%.o: src/krldr/%.asm
+	$(ASM) -g -f elf32 -I$(KRLDR_HDRS) -o $@ $<
+
+krldr: $(KRLDR_OBJS)
+	$(LD) -T src/krldr/link.ld -o build/krldr/krldr.elf $^
+	$(OC) --only-keep-debug build/krldr/krldr.elf build/krldr.sym
+	$(OC) -O binary build/krldr/krldr.elf build/krldr.bin
 
 
 #=============================================================================
 # Build kernel (todo)
 
-# recursive:
-# KERNEL_SRCS_C = $(shell find src/kernel -name "*.c")
-# KERNEL_SRCS_ASM = $(shell find src/kernel -name "*.asm")
-# @echo "KERNEL_SRCS_C = $(KERNEL_SRCS_C)"
-# @echo "KERNEL_SRCS_ASM = $(KERNEL_SRCS_ASM)"
-# @echo "KERNEL_OBJS = $(KERNEL_OBJS)"
-
-KERNEL_SRCS_C = $(wildcard src/kernel/*.c)
-KERNEL_SRCS_ASM = $(wildcard src/kernel/*.asm)
-KERNEL_HDRS = src/kernel/include
+KERNEL_SRCS_C = $(filter src/kernel/%.c, $(SRCS))
+KERNEL_SRCS_ASM = $(filter src/kernel/%.asm, $(SRCS))
 KERNEL_OBJS = \
-	$(patsubst src/kernel/%.c, build/kernel/%.o, $(KERNEL_SRCS_C)) \
-	$(patsubst src/kernel/%.asm, build/kernel/%.o, $(KERNEL_SRCS_ASM))
+	$(KERNEL_SRCS_C:src/kernel/%.c=build/kernel/%.o) \
+	$(KERNEL_SRCS_ASM:src/kernel/%.asm=build/kernel/%.o)
+KERNEL_HDRS = src/kernel/include
 
 build/kernel/%.o: src/kernel/%.c
 	$(CC) -g $(CCFLAGS) -I $(KERNEL_HDRS) -o $@ $<
 
 build/kernel/%.o: src/kernel/%.asm
-	$(ASM) -f elf32 -o $@ $<
+	$(ASM) -g -f elf32 -o $@ $<
 
 kernel: $(KERNEL_OBJS)
-# -T src/link.ld 
-	$(LD) -o build/kernel.elf $^
-# Save debug symbols to build/kernel.sym:
+	$(LD) -T src/kernel/link.ld -o build/kernel.elf $^
 	$(OC) --only-keep-debug build/kernel.elf build/kernel.sym
-# Remove debug symbols from build/kernel.bin:
 	$(OC) --strip-debug build/kernel.elf
 
 
@@ -76,6 +89,6 @@ ISO = build/myos.iso
 
 iso: boot krldr kernel
 	dd if=/dev/zero of=$(ISO) bs=512 count=256
-	dd if=build/boot of=$(ISO) conv=notrunc bs=512 seek=0 count=1
-	dd if=build/krldr of=$(ISO) conv=notrunc bs=512 seek=1 count=64
+	dd if=build/boot.bin of=$(ISO) conv=notrunc bs=512 seek=0 count=1
+	dd if=build/krldr.bin of=$(ISO) conv=notrunc bs=512 seek=1 count=64
 	dd if=build/kernel.elf of=$(ISO) conv=notrunc bs=512 seek=65

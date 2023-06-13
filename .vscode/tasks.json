@@ -3,25 +3,11 @@
 	"tasks": [
 		{
 			"label": "Build MyOS",
-			"command": "nasm",
-			"args": [
-				"-g",
-				"-f",
-				"bin",
-				"-o",
-				"${workspaceFolder}/bin/boot.bin",
-				"${workspaceFolder}/src/boot.asm"
-			]
+			"command": "make"
 		},
 		{
-			"label": "Debug QEMU",
+			"label": "Debug MyOS",
 			"command": "qemu-system-i386",
-			"args": [
-				"-drive",
-				"format=raw,index=0,if=ide,file=${workspaceFolder}/bin/myos.iso",
-				"-s",
-				"-S"
-			],
 			"problemMatcher": []
 		}
 	]

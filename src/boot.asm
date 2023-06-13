@@ -1,4 +1,3 @@
-
 ;									MEMORY MAP
 ;
 ;
@@ -21,16 +20,15 @@ bits 16
 org 0x7c00
 
 start:
-	cli
-	mov		ax, 0x07ef
-	mov		ss, ax			; Stack > 0x7ef0
-	mov		sp, 0
-	mov		bp, 0
+	cli 
+	mov		sp, 0x7f00		; Stack > 0x7f00
+	mov		bp, sp
 	
 	xor		ax, ax			; Set registers to zero
 	mov		bx, ax
 	mov		cx, ax
 	mov		dx, ax
+	mov		ss, ax
 	mov		ds, ax
 	mov		si, ax
 	mov		es, ax
@@ -77,8 +75,8 @@ print_end:
 
 
 ; Data
-disk_err_str	db	'DISK ERROR!', 0x0d, 0x0a, 0x00
-boot_str		db	'MYOS BOOT', 0x0d, 0x0a, 0x00
+disk_err_str	db	"DISK ERROR!", 0x0d, 0x0a, 0x00
+boot_str		db	"MYOS BOOT", 0x0d, 0x0a, 0x00
 
 drv_num			db	0x80
 
@@ -95,4 +93,4 @@ db	0xff	; End of bootloader
 
 
 times 510-($-$$) db 0		; Set remain bytes to zero
-db 0x55, 0xAA				; Boot signature
+db 0x55, 0xaa				; Boot signature

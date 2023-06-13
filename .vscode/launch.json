@@ -6,15 +6,11 @@
 			"request": "attach",
 			"target": "localhost:1234",
 			"remote": true,
-			"gdbpath": "gdb",
+			"gdbpath": "i686-elf-gdb",
 			"cwd": "${workspaceRoot}",
 			"valuesFormatting": "parseText",
-			//"autorun": ["set architecture i386:x86-64"],
 			"debugger_args": [
-				"-ix", "${workspaceFolder}/conf/gdb_init_real_mode.txt",
-				"-ex", "set tdesc filename ${workspaceFolder}/conf/target.xml",
-				"-ex", "br *0x7c00",
-				"-ex", "c"
+				"-q", "-ix", "${workspaceFolder}/scripts/gdb_krldr.txt",
 			]
 		}
 	]

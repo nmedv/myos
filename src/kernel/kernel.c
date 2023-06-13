@@ -1,9 +1,8 @@
+void print(char* string);
+void loop();
 
-int krmain()
+void kmain()
 {
-	int a = 2;
-	int b = 3;
-	int c = a + b;
-	
-	return c;
+	print("KERNEL\n");
+	loop();
 }
