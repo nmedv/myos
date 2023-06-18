@@ -6,7 +6,7 @@ SECTIONS
 	
 	.text :
 	{
-		build/kernel/start.o(.text)
+		build/kernel/assembly/kernel.o(.text)
 		*(.text)
 	}
 

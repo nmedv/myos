@@ -19,15 +19,17 @@ krldr:
 	int		0x13
 	jc		drv_load_err		; Error (if CF is 1)
 	
+	cli
 	lgdt	[gdtr]				; Setup GDT and IDT
-	lidt	[idtr]
-	
+
 	mov		eax, cr0 
 	or		al, 1				; set PE bit in CR0 register
 	mov		cr0, eax
 	
 	jmp		0x08:flush			; Reload CS
-	
+
+bits 32
+
 flush:
 	mov		ax, 0x10			; Reload remain segment registers
 	mov		ds, ax
@@ -35,9 +37,8 @@ flush:
 	mov		fs, ax
 	mov		gs, ax
 	mov		ss, ax
-	jmp		dword entry32		; Jump to 32-bit mode
 
-bits 32
+	jmp		dword entry32		; Jump to 32-bit mode
 
 entry32:
 	xor		eax, eax
@@ -46,6 +47,7 @@ entry32:
 	mov		edx, eax
 	mov		esi, eax
 	mov		edi, eax
+	sti
 
 	; todo: add code to find entry in ELF file
 	jmp		0x10060				; Jump to kernel
@@ -70,20 +72,20 @@ disk_err_str	db	"DISK ERROR!", 0x00
 krldr_str		db	"KERNEL LOAD", 0x00
 drv_num			db	0x80
 
-; Flat 32-bit mode segment descriptors
-gdt_start:
-sd_null			dq	0x00
-sd_kr_code		db	0xff, 0xff, 0x00, 0x00, 0x00, 0x9a, 0xcf, 0x00
-sd_kr_data		db	0xff, 0xff, 0x00, 0x00, 0x00, 0x92, 0xcf, 0x00
-gdt_end:
-gdtr			dw	gdt_end - gdt_start
-				dd	gdt_start
-idtr			dw	0x00
-				dd	0x00
-
 ; Kernel DAP
 kr_dap			dw	0x1000
 				dw	0x0040
 				dw	0x0000
 				dw	0x1000
 				dq	0x41
+
+; Flat 32-bit mode segment descriptors
+gdt_start:
+gd_null			dq	0x00
+gd_kr_code		db	0xff, 0xff, 0x00, 0x00, 0x00, 0x9a, 0xcf, 0x00
+gd_kr_data		db	0xff, 0xff, 0x00, 0x00, 0x00, 0x92, 0xcf, 0x00
+gdt_end:
+gdtr			dw	gdt_end - gdt_start
+				dd	gdt_start
+idtr			dw	0x00
+				dd	0x00

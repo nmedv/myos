@@ -27,6 +27,7 @@ dirs:
 	mkdir -p build
 	mkdir -p build/krldr
 	mkdir -p build/kernel
+	mkdir -p build/kernel/assembly
 
 clean:
 	rm -r -f build/*
@@ -68,13 +69,13 @@ KERNEL_SRCS_C = $(filter src/kernel/%.c, $(SRCS))
 KERNEL_SRCS_ASM = $(filter src/kernel/%.asm, $(SRCS))
 KERNEL_OBJS = \
 	$(KERNEL_SRCS_C:src/kernel/%.c=build/kernel/%.o) \
-	$(KERNEL_SRCS_ASM:src/kernel/%.asm=build/kernel/%.o)
+	$(KERNEL_SRCS_ASM:src/kernel/%.asm=build/kernel/assembly/%.o)
 KERNEL_HDRS = src/kernel/include
 
 build/kernel/%.o: src/kernel/%.c
 	$(CC) -g $(CCFLAGS) -I $(KERNEL_HDRS) -o $@ $<
 
-build/kernel/%.o: src/kernel/%.asm
+build/kernel/assembly/%.o: src/kernel/%.asm
 	$(ASM) -g -f elf32 -o $@ $<
 
 kernel: $(KERNEL_OBJS)

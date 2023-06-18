@@ -1,5 +1,5 @@
 # i386-32bit config
-set tdesc filename scripts/target.xml
+# set tdesc filename scripts/target.xml
 
 # Intel syntax
 set disassembly-flavor intel

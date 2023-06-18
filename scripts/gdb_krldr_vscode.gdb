@@ -5,7 +5,7 @@ set tdesc filename scripts/target.xml
 set disassembly-flavor intel
 
 # GDB real mode config
-source scripts/gdb_init_real_mode.gdb
+# source scripts/gdb_init_real_mode.gdb
 
 # Start myos.iso in QEMU i386 emulator
 shell qemu-system-i386 \

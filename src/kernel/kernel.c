@@ -1,8 +1,10 @@
 #include <stdbool.h>
 #include "vga.h"
+#include "idt.h"
 
 void kmain(void)
 {
+	idt_init();
 	terminal_initialize();
 
 	int i = 0;
