@@ -6,7 +6,7 @@ SECTIONS
 	
 	.text :
 	{
-		build/krldr/krldr.o(*text)
+		build/krldr/krldr.o(.text)
 		*(.text)
 	}
 	

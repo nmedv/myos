@@ -1,8 +1,16 @@
-void print(char* string);
-void loop();
+#include <stdbool.h>
+#include "vga.h"
 
-void kmain()
+void kmain(void)
 {
-	print("KERNEL\n");
-	loop();
+	terminal_initialize();
+
+	int i = 0;
+
+	while (i++ < 100)
+		terminal_writestring("Some string to test if terminal shift is working");
+
+	terminal_writestring("\nWrite some end\n");
+
+	while (true) ;
 }

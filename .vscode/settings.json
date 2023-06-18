@@ -1,28 +1,3 @@
 {
-	// "makefile.configurations": [
-	// 	{
-	// 		"name": "clean",
-	// 		"makeArgs": ["clean"]
-	// 	},
-	// 	{
-	// 		"name": "dirs",
-	// 		"makeArgs": ["dirs"]
-	// 	},
-	// 	{
-	// 		"name": "boot",
-	// 		"makeArgs": ["boot"]
-	// 	},
-	// 	{
-	// 		"name": "krldr",
-	// 		"makeArgs": ["krldr"]
-	// 	},
-	// 	{
-	// 		"name": "kernel",
-	// 		"makeArgs": ["krldr"]
-	// 	},
-	// 	{
-	// 		"name": "iso",
-	// 		"makeArgs": ["iso"]
-	// 	}
-	// ]
+	"nasm.validate": false
 }

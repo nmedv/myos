@@ -1,16 +1,31 @@
 {
 	"configurations": [
 		{
-			"name": "Debug MyOS",
+			"name": "Debug Kernel Loader",
 			"type": "gdb",
 			"request": "attach",
 			"target": "localhost:1234",
 			"remote": true,
 			"gdbpath": "i686-elf-gdb",
 			"cwd": "${workspaceRoot}",
+			"executable": "build/krldr.elf",
 			"valuesFormatting": "parseText",
 			"debugger_args": [
-				"-q", "-ix", "${workspaceFolder}/scripts/gdb_krldr.txt",
+				"-ix", "scripts/gdb_krldr_vscode.gdb"
+			]
+		},
+		{
+			"name": "Debug Kernel",
+			"type": "gdb",
+			"request": "attach",
+			"target": "localhost:1234",
+			"remote": true,
+			"gdbpath": "i686-elf-gdb",
+			"cwd": "${workspaceRoot}",
+			"executable": "build/kernel.elf",
+			"valuesFormatting": "parseText",
+			"debugger_args": [
+				"-ix", "scripts/gdb_kernel_vscode.gdb",
 			]
 		}
 	]

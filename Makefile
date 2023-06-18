@@ -6,6 +6,7 @@ ASM = nasm
 CC = i686-elf-gcc
 CCFLAGS = -Wall -Wextra -Werror -ffreestanding
 CCFLAGS += -nostdlib -nostdinc -fno-builtin -m32 -c
+CCFLAGS += -I "${HOME}/opt/cross/lib/gcc/i686-elf/13.1.0/include"
 
 OC = i686-elf-objcopy
 

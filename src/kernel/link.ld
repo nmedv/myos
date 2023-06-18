@@ -1,4 +1,4 @@
-ENTRY(kmain)
+ENTRY(start)
 
 SECTIONS
 {
@@ -6,7 +6,13 @@ SECTIONS
 	
 	.text :
 	{
+		build/kernel/start.o(.text)
 		*(.text)
+	}
+
+	.stack :
+	{
+		*(.stack)
 	}
 	
 	/* .rdata BLOCK(0x1000) : ALIGN(0x1000)

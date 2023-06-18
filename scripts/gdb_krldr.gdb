@@ -1,6 +1,9 @@
 # i386-32bit config
 set tdesc filename scripts/target.xml
 
+# GDB real mode config
+source scripts/gdb_init_real_mode.gdb
+
 # Start myos.iso in QEMU i386 emulator
 shell qemu-system-i386 \
 	-drive format=raw,index=0,if=ide,file="build/myos.iso" -s -S &
@@ -12,8 +15,10 @@ shell sleep 5
 target remote localhost:1234
 
 # Load debug symbols
-add-symbol-file build/kernel.sym
+add-symbol-file "build/krldr.sym"
 
-# Kernel break
-br kmain
-c
+# Bootloader break
+br *0x7c00
+
+# Krldr break
+br krldr

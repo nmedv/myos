@@ -2,12 +2,27 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Build MyOS",
-			"command": "make"
+			"label": "Build",
+			"type": "shell",
+			"command": "make",
+			"problemMatcher": []
 		},
 		{
-			"label": "Debug MyOS",
-			"command": "qemu-system-i386",
+			"label": "Build Kernel Loader",
+			"type": "shell",
+			"command": "make krldr && make iso",
+			"problemMatcher": []
+		},
+		{
+			"label": "Build Kernel",
+			"type": "shell",
+			"command": "make kernel && make iso",
+			"problemMatcher": []
+		},
+		{
+			"label": "Clean Build",
+			"type": "shell",
+			"command": "make clean",
 			"problemMatcher": []
 		}
 	]

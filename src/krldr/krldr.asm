@@ -40,6 +40,13 @@ flush:
 bits 32
 
 entry32:
+	xor		eax, eax
+	mov		ebx, eax
+	mov		ecx, eax
+	mov		edx, eax
+	mov		esi, eax
+	mov		edi, eax
+
 	; todo: add code to find entry in ELF file
 	jmp		0x10060				; Jump to kernel
 
