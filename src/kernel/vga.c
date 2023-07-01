@@ -25,7 +25,7 @@ enum vga_color {
 
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
-// static size_t VGA_TAB_WIDTH = 4;
+/* static size_t VGA_TAB_WIDTH = 4; */
 static uint16_t* VGA_BUFFER = (uint16_t*) 0xB8000;
 
 static size_t terminal_row;

@@ -24,7 +24,7 @@ void idt_init(void) {
 
 	for (uint8_t vector = 0; vector < IDT_MAX_DESCRIPTORS; vector++) {
 		idt_set_descriptor(vector, isr_stub_table[vector], 0x8E);
-		// vectors[vector] = true;
+		/* vectors[vector] = true; */
 	}
 
 	idt_load((uintptr_t)&idtr);
